@@ -32,7 +32,7 @@ function init() {
     // CAMERA
 
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
-    camera.position.set(-350, 35, -300);
+    camera.position.set(0, 55, -100);
     camera.rotation.y = 0.4;
     //camera.position.x = -0.8;
 
@@ -72,11 +72,9 @@ function init() {
 
     // LIGHTS
 
-    scene.add(new THREE.AmbientLight(0x222222));
+    scene.add(new THREE.AmbientLight(0xffffff));
 
     light = new THREE.SpotLight(0xffffff, 5, 10000);
-    light.angle = -180;
-    light.position.set(camera.position);
     scene.add(light);
 
     // CHARACTER
@@ -121,19 +119,18 @@ function render() {
     var delta = clock.getDelta();
     //character.update(delta);
     if(camera.rotation.y > -3.12){
-        camera.rotation.y -= 0.001;
+        camera.rotation.y -= 0.005;
         camera.position.z += 2;
     }else if(camera.position.z < 1800){
         camera.position.z += 10;
     }else{
         timeSum += delta;
         if(timeSum >= 4){
-            camera.position.set(-300, 35, -300);
+            camera.position.set(0, 55, -100);
             camera.rotation.y = 0.4;
-            i = 0;
+            timeSum = 0.0;
         }
     }
-    light.position.set(camera.position);
 
     renderer.render(scene, camera);
 }
