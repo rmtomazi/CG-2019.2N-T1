@@ -8,12 +8,9 @@ var SCREEN_HEIGHT = window.innerHeight;
 
 var container, camera, light, scene, renderer;
 
-var character;
+var globo;
 
-var gui, playbackConfig = {
-    speed: 1.0,
-    wireframe: false
-};
+var cameras = [], microphones = [];
 
 var controls;
 
@@ -32,10 +29,7 @@ function init() {
     // CAMERA
 
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
-    camera.position.set(0, 55, -100);
-    camera.rotation.y = 0.4;
-    //camera.position.x = -0.8;
-
+    camera.position.set(0, 0, 1800);
     // SCENE
 
     scene = new THREE.Scene();
@@ -78,9 +72,8 @@ function init() {
     scene.add(light);
 
     // CHARACTER
-
-    var pula = new FBXLoader();
-    pula.load( './models/rede__globo_3d_model_by_logomanseva_db6gvy3.fbx', function ( object ) {
+    globo = new FBXLoader();
+    globo.load( './models/rede__globo_3d_model_by_logomanseva_db6gvy3.fbx', function ( object ) {
         object.traverse( function ( child ) {
             if ( child.isMesh ) {
                 child.castShadow = true;
@@ -90,6 +83,29 @@ function init() {
         );
         scene.add( object );
     } );
+    
+    var i;
+    var camera_positions = [
+        [0, 0, 450]
+    ];
+    for(i = 0; i < 21; i++){
+        var camera_ = new FBXLoader();
+        camera_.load( './models/camera.fbx', function ( object ) {
+            object.traverse( function ( child ) {
+                if ( child.isMesh ) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            }
+            );
+            object.rotation.set(1.5, -1.5, 0);
+            object.scale.set(0.01, 0.01, 0.01);
+            object.position.set(-70, 0, 420);
+            scene.add( object );
+        } );
+        cameras.push(camera_);
+    }
+
 }
 
 // EVENT HANDLERS
@@ -113,24 +129,31 @@ function animate() {
     stats.update();
 }
 
-var timeSum = 0.0;
+var timeSum = -1;
 
 function render() {
     var delta = clock.getDelta();
-    //character.update(delta);
-    if(camera.rotation.y > -3.12){
-        camera.rotation.y -= 0.005;
-        camera.position.z += 2;
-    }else if(camera.position.z < 1800){
-        camera.position.z += 10;
-    }else{
-        timeSum += delta;
-        if(timeSum >= 4){
-            camera.position.set(0, 55, -100);
-            camera.rotation.y = 0.4;
-            timeSum = 0.0;
-        }
-    }
+    // if(timeSum == -1){
+    //     camera.position.set(-0, 60, 0);
+    //     camera.rotation.set(-3, 0, 1.65);
+    //     timeSum = 0;
+    // }
+    // if(camera.rotation.y > -3){
+    //     camera.rotation.z += 0.001;
+    //     camera.rotation.y -= 0.002;
+    //     camera.position.z += 0.5;
+    // }else if(camera.position.z < 1800){
+    //     camera.position.z += 10;
+    // }else{
+    //     timeSum += delta;
+    //     if(timeSum >= 4){
+    //         camera.position.set(-0, 60, 0);
+    //         camera.rotation.set(-3, 0, 1.65);
+    //         timeSum = 0.0;
+    //     }
+    // }
+    // console.log(camera.position);
+    // console.log(camera.rotation);
 
     renderer.render(scene, camera);
 }
