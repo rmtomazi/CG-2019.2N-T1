@@ -149,7 +149,7 @@ function init() {
             }
             );
             i = nc++;
-            object3D.scale.set(0.01, 0.01, 0.01);
+            object3D.scale.set(0.008, 0.008, 0.008);
             object3D.rotation.set(0, cr[i][0], -1.5);
             object3D.position.set(cp[i][0], cp[i][1], cp[i][2]);
             scene.add( object3D );
@@ -175,11 +175,11 @@ function init() {
         [230, 40, 440],
         [230, -40, 440],
         [230, -120, 420],
-        [280, 160, 320],
-        [280, 80, 340],
-        [280, 0, 360],
-        [280, -80, 340],
-        [280, -160, 320]
+        [270, 160, 400],
+        [270, 80, 420],
+        [270, 0, 440],
+        [270, -80, 420],
+        [270, -160, 400]
     ];
     //microphones rotations 
     var mr = [
@@ -217,7 +217,7 @@ function init() {
             }
             );
             i = nm++;
-            object3D.scale.set(0.01, 0.01, 0.01);
+            object3D.scale.set(0.002, 0.002, 0.002);
             //object3D.rotation.set(0, cr[i][0], -1.5);
             object3D.position.set(mp[i][0], mp[i][1], mp[i][2]);
             scene.add( object3D );
@@ -254,18 +254,65 @@ function animate() {
     stats.update();
 }
 
+var py, dpy;
+var step;
 function render() {
     var delta = clock.getDelta();
+    // timeSum = 0;
+    // step = 10;
     if(timeSum == -1){
-        camera.position.set(-200, 40, 450);
-        camera.rotation.x = 90 * Math.PI / 180;
+        camera.position.set(-200, 0, 400);
+        camera.rotation.x = (70 * Math.PI / 180);
         camera.rotation.y = -100 * Math.PI / 180;
+        camera.rotateX(0.5);
+        py = 0.5;
+        dpy = 0.0001;
+        step = 0;
         timeSum = 0;
     }else{
-        //camera.position.x += 1;
-        //camera.position.z = Math.pow(-0.00329004329 * camera.position.x, 2) +
-        //                    0.4844155844 * camera.position.x + 532.3030303;
-        camera.rotation.y += 0.001;
+        if(step == 0){
+            camera.position.x += 1;
+            camera.position.z = (-0.00329004329004329 * Math.pow(camera.position.x, 2)) +
+                                (0.4844155844155844 * camera.position.x) + 532.3030303030303;
+            camera.position.y -= 0.3;
+            camera.rotateX(-0.003);
+            camera.rotateY(0.003);
+            if(camera.position.x >= 100)
+                step ++;
+        }else if(step == 1){
+            camera.position.x += 1;
+            camera.position.z = (-0.00329004329004329 * Math.pow(camera.position.x, 2)) +
+                                (0.4844155844155844 * camera.position.x) + 532.3030303030303;
+            camera.rotateX(-0.004);
+            camera.rotateY(0.003);
+            camera.rotateZ(0.0045);
+            if(py > 0){
+                py -= dpy;
+                dpy *= 2;
+                camera.position.y -= py;
+            }
+            if(camera.position.x >= 250)
+                step ++;
+        }else if(step == 2){
+            for (var i = 0; i < cameras.length; i++){
+                cameras[i].visible = false;
+            }
+            for (var i = 0; i < microphones.length; i++){
+                microphones[i].visible = false;
+            }
+            step++;
+        }else if(step == 3){
+            if(camera.rotation.y < 0.0347339891)
+                camera.rotateY(0.001);
+            camera.position.z += 10;
+            if(camera.position.x > 72)
+                camera.position.x -= 5;
+            if(camera.position.y < 0)
+                camera.position.y += 5;
+            if(camera.position.z >= 1800)
+                step ++;
+        }
+        console.log(camera.rotation);
     }
     renderer.render(scene, camera);
 }
