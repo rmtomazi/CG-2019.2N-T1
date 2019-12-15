@@ -248,6 +248,7 @@ function init() {
     sound = new THREE.Audio(listener);
 
     // load a sound and set it as the Audio object's buffer
+    document.getElementsByTagName("button")[0].click()
     var audioLoader = new THREE.AudioLoader();
     audioLoader.load('./models/som.ogg', function( buffer ) {
         sound.setBuffer(buffer);
@@ -304,6 +305,7 @@ var step;
 function render() {
     var delta = clock.getDelta();
     if(timeSum == -1){
+        document.getElementsByTagName("button")[0].click()
         camera.position.set(-200, 0, 400);
         camera.rotation.set(3.11038, -1.04179, 1.922030);
         py = 0.5;
