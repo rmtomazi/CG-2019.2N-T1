@@ -18,6 +18,7 @@ Foi escolhido como trabalho final a opção "Vinheta do plantão de notícias da
 O resultado desse trabalho pode ser visualizado em https://rmtomazi.github.io/CG-2019.2N-T1/
 
 <br>
+
 **ARTES:**
 
 1. Modelo do Logo da Globo:
