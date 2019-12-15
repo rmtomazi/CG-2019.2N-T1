@@ -1,6 +1,5 @@
 import * as THREE from './three.js-r110/build/three.module.js';
 import Stats from './three.js-r110/examples/jsm/libs/stats.module.js';
-import { OrbitControls } from './three.js-r110/examples/jsm/controls/OrbitControls.js';
 import { FBXLoader } from './three.js-r110/examples/jsm/loaders/FBXLoader.js';
 
 // microfone - https://sketchfab.com/3d-models/microphone-9c8483481a134ecf84d3864b45faca6a
@@ -11,7 +10,7 @@ import { FBXLoader } from './three.js-r110/examples/jsm/loaders/FBXLoader.js';
 var SCREEN_WIDTH = window.innerWidth;
 var SCREEN_HEIGHT = window.innerHeight;
 
-var container, camera, light, scene, renderer, sound;
+var container, camera, scene, renderer, sound;
 
 var globo;
 
@@ -323,7 +322,6 @@ function render() {
         sound.play();
         step = 0;
         timeSum = 0;
-        console.log(camera.rotation);
     }else{
         if(step == 0){
             camera.position.x += 1.4;
